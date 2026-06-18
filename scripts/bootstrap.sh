@@ -31,20 +31,22 @@ else
   git -C "$DOTFILES_DIR" pull
 fi
 
-if [ ! -d "$HOME/.nvm" ]; then
-  echo "→ Installing NVM..."
-  curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-  export NVM_DIR="$HOME/.nvm"
-  source "$NVM_DIR/nvm.sh"
-  nvm install --lts
-  nvm alias default node
-else
-  echo "✓ NVM already installed"
-fi
+# NVM is installed via Homebrew (triggered by nix-darwin homebrew.brews)
+# After darwin-rebuild, activate it and install LTS node
+
 
 echo "→ Applying nix-darwin configuration..."
 cd "$DOTFILES_DIR"
 nix run nix-darwin -- switch --flake ".#Leons-MacBook-Pro-2"
+
+# Activate NVM (installed via Homebrew above) and install LTS node
+export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"
+if command -v nvm &>/dev/null; then
+  echo "→ Installing Node LTS via NVM..."
+  nvm install --lts
+  nvm alias default node
+fi
 
 echo "→ Registering JDKs with jenv..."
 export PATH="$HOME/.jenv/bin:$PATH"
@@ -76,4 +78,7 @@ echo "  2. BTT       → Preferences → Manage Presets → Import"
 echo "  3. Karabiner → grant Input Monitoring in System Settings → Privacy"
 echo "  4. ICE       → reconfigure menu bar order"
 echo "  5. VS Code   → sign in to Settings Sync"
+echo "  6. Atuin     → run: atuin login (to sync shell history)"
+echo "  7. AWS/npm   → run: ds-login (CodeArtifact auth)"
+echo "  8. GCP/npm   → run: do-login (Artifact Registry auth)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"

@@ -5,9 +5,13 @@
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [
+    # CLI essentials
     ripgrep fd fzf bat eza zoxide jq yq htop tldr
-    gh httpie
+    # Dev tools
+    gh httpie neovim go atuin
+    # Node package managers
     nodePackages.pnpm nodePackages.yarn
+    # Java version management
     jenv
   ];
 
@@ -17,37 +21,89 @@
     syntaxHighlighting.enable = true;
     oh-my-zsh = {
       enable = true;
-      theme = "";
+      theme = "robbyrussell";
       plugins = [ "git" "docker" "macos" "z" "fzf" ];
     };
     shellAliases = {
-      ll   = "eza -la --icons";
-      ls   = "eza --icons";
-      cat  = "bat";
-      cd   = "z";
-      gs   = "git status";
-      gp   = "git push";
-      gl   = "git pull";
-      gco  = "git checkout";
-      gcb  = "git checkout -b";
-      nrs  = "darwin-rebuild switch --flake ~/.dotfiles";
-      brewski = "brew update && brew upgrade && brew cleanup";
+      # File listing
+      l          = "eza -laF";
+      "ö"        = "eza -laF";
+      ll         = "eza -la --icons";
+      ls         = "eza --icons";
+      cat        = "bat";
+      # Navigation
+      cd         = "z";
+      # Git
+      gs         = "git status";
+      gp         = "git push";
+      gl         = "git pull";
+      gco        = "git checkout";
+      # Gradle
+      gcb        = "./gradlew clean build";
+      gb         = "./gradlew build";
+      # Docker Compose
+      dc         = "docker-compose";
+      dcupd      = "docker-compose up -d";
+      dcupdf     = "docker-compose up -d --build --force-recreate";
+      dcdn       = "docker-compose down";
+      # Node cleanup
+      clear-node = "find . -name 'node_modules' -type d -prune -exec rm -rf '{}' +";
+      # Local LLM
+      llama      = "llama-server -hf unsloth/Qwen3.6-35B-A3B-GGUF:UD-Q6_K_XL --port 51000 -c 32768 --n-gpu-layers 999";
+      # Work logins
+      ds-login   = "aws sso login && aws codeartifact login --tool npm --domain dst-package-registry --repo npm --namespace @derstandard";
+      do-login   = "npx google-artifactregistry-auth ~/.npmrc";
+      # Nix
+      nrs        = "darwin-rebuild switch --flake ~/.dotfiles";
+      brewski    = "brew update && brew upgrade && brew cleanup";
     };
     sessionVariables = {
       EDITOR = "code --wait";
       LANG   = "en_US.UTF-8";
     };
     initExtra = ''
-      export NVM_DIR="$HOME/.nvm"
-      [ -s "$NVM_DIR/nvm.sh" ] && source "$NVM_DIR/nvm.sh"
-      [ -s "$NVM_DIR/bash_completion" ] && source "$NVM_DIR/bash_completion"
-
+      # PATH additions
       export PATH="$HOME/.jenv/bin:$PATH"
-      eval "$(jenv init -)"
+      export PATH="$PATH:$HOME/Library/Application Support/JetBrains/Toolbox/scripts"
+      export PATH="/opt/homebrew/opt/libpq/bin:$PATH"
+      export GOPATH="$HOME/go"
+      export PATH="$GOPATH/bin:$PATH"
 
+      # NVM (managed via Homebrew)
+      export NVM_DIR="$HOME/.nvm"
+      [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && source "/opt/homebrew/opt/nvm/nvm.sh"
+      [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && source "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"
+
+      # jenv
+      eval "$(jenv init -)"
+      jenv enable-plugin export
+
+      # zoxide
       eval "$(zoxide init zsh)"
 
+      # atuin — shell history
+      eval "$(atuin init zsh)"
+
+      # fzf
       [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+      # Angular CLI autocompletion
+      command -v ng &>/dev/null && source <(ng completion script)
+
+      # opencode-memory wrapper
+      opencode() {
+        command opencode-memory "$@"
+      }
+
+      # Jump to direnv project root
+      root() {
+        if [[ -n "''${PROJECT_ROOT:-}" ]]; then
+          cd "$PROJECT_ROOT"
+        else
+          print -u2 "root: PROJECT_ROOT is not set (enter a direnv-enabled project directory first)"
+          return 1
+        fi
+      }
     '';
   };
 
@@ -74,7 +130,10 @@
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
-      core.editor = "code --wait";
+      core = {
+        editor = "code --wait";
+        autocrlf = "input";
+      };
       diff.colorMoved = "default";
       credential.helper = "osxkeychain";
     };
@@ -89,17 +148,27 @@
   };
 
   home.file.".ssh/config".text = ''
+    # OrbStack SSH (must remain first)
+    Include ~/.orbstack/ssh/config
+
     Host *
       AddKeysToAgent yes
       UseKeychain yes
       IdentityFile ~/.ssh/id_ed25519
   '';
 
-  # Karabiner — uncomment after placing karabiner.json in home/
-  # home.file.".config/karabiner/karabiner.json" = {
-  #   source = ./karabiner.json;
-  #   force  = true;
-  # };
+  home.file.".config/karabiner/karabiner.json" = {
+    source = ./karabiner.json;
+    force  = true;
+  };
+
+  # Atuin config — only non-default settings
+  home.file.".config/atuin/config.toml".text = ''
+    enter_accept = true
+
+    [sync]
+    records = true
+  '';
 
   programs.home-manager.enable = true;
   programs.direnv = {

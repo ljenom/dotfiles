@@ -14,7 +14,7 @@
       autohide-time-modifier = 0.2;
       minimize-to-application = true;
       show-recents = false;
-      tilesize = 48;
+      tilesize = 40;
       mru-spaces = false;
     };
     finder = {
@@ -56,21 +56,41 @@
       autoUpdate = true;
       cleanup = "zap";
     };
-    taps = [ "homebrew/cask-fonts" ];
-    brews = [ "mas" ];
+    taps = [];
+    brews = [
+      "mas"
+      "nvm"
+      "awscli"
+      "azure-cli"
+      "cocoapods"
+      "maven"
+      "k6"
+    ];
     casks = [
-      "warp"
+      # Terminal & editors
+      "kitty"
       "visual-studio-code"
+      # Dev tools
+      "orbstack"
       "tableplus"
+      "ngrok"
+      "gcloud-cli"
+      "dotnet-sdk"
+      "claude-code"
+      # Productivity
       "raycast"
       "bettertouchtool"
       "karabiner-elements"
       "jordanbaird-ice"
+      # Browsers
       "arc"
       "firefox"
+      # Communication
       "slack"
       "zoom"
+      # Fonts
       "font-jetbrains-mono-nerd-font"
+      # JDKs
       "temurin@21"
       "temurin@17"
     ];
