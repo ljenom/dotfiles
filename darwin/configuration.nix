@@ -1,5 +1,6 @@
 { pkgs, ... }:
 {
+  system.primaryUser = "leonq";
   networking.hostName = "Leons-MacBook-Pro-2";
 
   nix.settings.experimental-features = "nix-command flakes";
