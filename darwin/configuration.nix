@@ -68,7 +68,6 @@
     casks = [
       # Terminal & editors
       "warp"
-      "kitty"
       "visual-studio-code"
       # Dev tools
       "orbstack"
