@@ -1,7 +1,7 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, user, ... }:
 {
-  home.username = "leonq";
-  home.homeDirectory = lib.mkForce "/Users/leonq";
+  home.username = user;
+  home.homeDirectory = lib.mkForce "/Users/${user}";
   home.stateVersion = "24.05";
 
   home.packages = with pkgs; [

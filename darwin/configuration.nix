@@ -1,10 +1,10 @@
-{ pkgs, ... }:
+{ pkgs, user, host, ... }:
 {
-  system.primaryUser = "leonq";
-  networking.hostName = "Leons-MacBook-Pro-2";
+  system.primaryUser = user;
+  networking.hostName = host;
 
   nix.settings.experimental-features = "nix-command flakes";
-  nix.settings.trusted-users = [ "root" "leonq" ];
+  nix.settings.trusted-users = [ "root" user ];
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "aarch64-darwin";
 

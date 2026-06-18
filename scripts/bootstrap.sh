@@ -37,9 +37,10 @@ fi
 # After darwin-rebuild, activate it and install LTS node
 
 
-echo "→ Applying nix-darwin configuration (first run requires sudo)..."
+HOSTNAME="$(scutil --get LocalHostName)"
+echo "→ Applying nix-darwin configuration for $HOSTNAME (first run requires sudo)..."
 cd "$DOTFILES_DIR"
-sudo nix run nix-darwin -- switch --flake ".#Leons-MacBook-Pro-2"
+sudo nix run nix-darwin -- switch --flake ".#$HOSTNAME"
 
 # Activate NVM (installed via Homebrew above) and install LTS node
 export NVM_DIR="$HOME/.nvm"
