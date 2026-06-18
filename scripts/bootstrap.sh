@@ -17,10 +17,12 @@ fi
 
 if ! command -v nix &>/dev/null; then
   echo "→ Installing Nix..."
-  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install
+  curl --proto '=https' --tlsv1.2 -sSf -L https://install.determinate.systems/nix | sh -s -- install --no-confirm
   source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh
 else
   echo "✓ Nix already installed"
+  # Ensure nix is in PATH for the current shell
+  source /nix/var/nix/profiles/default/etc/profile.d/nix-daemon.sh 2>/dev/null || true
 fi
 
 if [ ! -d "$DOTFILES_DIR" ]; then
@@ -35,9 +37,9 @@ fi
 # After darwin-rebuild, activate it and install LTS node
 
 
-echo "→ Applying nix-darwin configuration..."
+echo "→ Applying nix-darwin configuration (first run requires sudo)..."
 cd "$DOTFILES_DIR"
-nix run nix-darwin -- switch --flake ".#Leons-MacBook-Pro-2"
+sudo nix run nix-darwin -- switch --flake ".#Leons-MacBook-Pro-2"
 
 # Activate NVM (installed via Homebrew above) and install LTS node
 export NVM_DIR="$HOME/.nvm"
@@ -78,7 +80,6 @@ echo "  2. BTT       → Preferences → Manage Presets → Import"
 echo "  3. Karabiner → grant Input Monitoring in System Settings → Privacy"
 echo "  4. ICE       → reconfigure menu bar order"
 echo "  5. VS Code   → sign in to Settings Sync"
-echo "  6. Atuin     → run: atuin login (to sync shell history)"
-echo "  7. AWS/npm   → run: ds-login (CodeArtifact auth)"
-echo "  8. GCP/npm   → run: do-login (Artifact Registry auth)"
+echo "  6. AWS/npm   → run: ds-login (CodeArtifact auth)"
+echo "  7. GCP/npm   → run: do-login (Artifact Registry auth)"
 echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
