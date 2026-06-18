@@ -10,7 +10,7 @@
     # Dev tools
     gh httpie neovim go
     # Node package managers
-    nodePackages.pnpm nodePackages.yarn
+    pnpm yarn
     # Java version management
     jenv
   ];
@@ -121,23 +121,25 @@
 
   programs.git = {
     enable = true;
-    userName  = "Leon Quattlebaum";
-    userEmail = "leonquattlebaum@gmail.com";
-    extraConfig = {
+    settings = {
+      user = {
+        name  = "Leon Quattlebaum";
+        email = "leonquattlebaum@gmail.com";
+      };
       init.defaultBranch = "main";
       pull.rebase = true;
       push.autoSetupRemote = true;
       core = {
-        editor = "code --wait";
+        editor   = "code --wait";
         autocrlf = "input";
       };
       diff.colorMoved = "default";
       credential.helper = "osxkeychain";
-    };
-    aliases = {
-      lg = "log --oneline --graph --decorate --all";
-      st = "status -sb";
-      co = "checkout";
+      alias = {
+        lg = "log --oneline --graph --decorate --all";
+        st = "status -sb";
+        co = "checkout";
+      };
     };
     ignores = [
       ".DS_Store" "*.orig" ".env.local" ".idea/" ".vscode/" "node_modules/"
