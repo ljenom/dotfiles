@@ -61,6 +61,7 @@
     brews = [
       "mas"
       "nvm"
+      "jenv"
       "azure-cli"
       "cocoapods"
       "maven"

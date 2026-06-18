@@ -11,8 +11,6 @@
     gh httpie neovim go
     # Node package managers
     pnpm yarn
-    # Java version management
-    jenv
   ];
 
   programs.zsh = {
