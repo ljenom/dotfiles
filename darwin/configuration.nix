@@ -75,7 +75,6 @@
       "orbstack"
       "tableplus"
       "ngrok"
-      "dotnet-sdk"
       "claude-code"
       # Productivity
       "raycast"
@@ -84,10 +83,6 @@
       "jordanbaird-ice"
       # Browsers
       "arc"
-      "firefox"
-      # Communication
-      "slack"
-      "zoom"
       # Fonts
       "font-jetbrains-mono-nerd-font"
       # JDKs
