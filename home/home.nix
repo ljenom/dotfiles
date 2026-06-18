@@ -8,7 +8,7 @@
     # CLI essentials
     ripgrep fd fzf bat eza zoxide jq yq htop tldr
     # Dev tools
-    gh httpie neovim go atuin
+    gh httpie neovim go
     # Node package managers
     nodePackages.pnpm nodePackages.yarn
     # Java version management
@@ -80,9 +80,6 @@
 
       # zoxide
       eval "$(zoxide init zsh)"
-
-      # atuin — shell history
-      eval "$(atuin init zsh)"
 
       # fzf
       [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
@@ -161,14 +158,6 @@
     source = ./karabiner.json;
     force  = true;
   };
-
-  # Atuin config — only non-default settings
-  home.file.".config/atuin/config.toml".text = ''
-    enter_accept = true
-
-    [sync]
-    records = true
-  '';
 
   programs.home-manager.enable = true;
   programs.direnv = {

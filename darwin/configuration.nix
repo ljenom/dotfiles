@@ -60,7 +60,6 @@
     brews = [
       "mas"
       "nvm"
-      "awscli"
       "azure-cli"
       "cocoapods"
       "maven"
@@ -68,13 +67,13 @@
     ];
     casks = [
       # Terminal & editors
+      "warp"
       "kitty"
       "visual-studio-code"
       # Dev tools
       "orbstack"
       "tableplus"
       "ngrok"
-      "gcloud-cli"
       "dotnet-sdk"
       "claude-code"
       # Productivity
