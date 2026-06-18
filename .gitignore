@@ -1,0 +1,6 @@
+.DS_Store
+*.bttpreset
+*.rayconfig
+secrets/
+.env
+.env.*
