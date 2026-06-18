@@ -3,8 +3,8 @@
   system.primaryUser = user;
   networking.hostName = host;
 
-  nix.settings.experimental-features = "nix-command flakes";
-  nix.settings.trusted-users = [ "root" user ];
+  # Determinate Nix manages the daemon and nix.conf — don't let nix-darwin conflict
+  nix.enable = false;
   nixpkgs.config.allowUnfree = true;
   nixpkgs.hostPlatform = "aarch64-darwin";
 
